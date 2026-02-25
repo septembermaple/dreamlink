@@ -1,0 +1,67 @@
+# IDE configuration directories
+.idea/
+.vscode/
+.vs/
+
+# Build output directories
+target/
+dist/
+build/
+
+# Dependency directories
+node_modules/
+jars/
+lib/
+
+# Log files
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS generated files
+Thumbs.db
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# IDE specific files
+*.iml
+*.ipr
+*.iws
+
+# Maven specific files
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle specific files
+gradle/wrapper/gradle-wrapper.jar
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Coverage directories
+coverage/
+.nyc_output/
+
+# Documentation build output
+docs/_build/
+
+# TypeScript declaration files
+dist-types/
