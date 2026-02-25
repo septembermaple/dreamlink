@@ -34,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
         message.setContent(request.getContent());
         message.setUserId(request.getUserId());
         message.setOtherUserId(request.getOtherUserId());
-        message.setIsRead(false);
+        message.setRead(false);
 
         return messageRepository.save(message);
     }
@@ -44,7 +44,7 @@ public class MessageServiceImpl implements MessageService {
         Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new RuntimeException("消息不存在"));
 
-        message.setIsRead(true);
+        message.setRead(true);
         return messageRepository.save(message);
     }
 

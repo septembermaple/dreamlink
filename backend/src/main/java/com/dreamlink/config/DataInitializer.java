@@ -28,7 +28,7 @@ public class DataInitializer implements CommandLineRunner {
             admin1.setAvatar("https://api.dicebear.com/9.x/avataaars/svg?seed=Aries");
             admin1.setConstellation("白羊座");
             admin1.setPhone("13800138001");
-            admin1.setIsAdmin(true);
+            admin1.setAdmin(true);
             userRepository.save(admin1);
 
             User admin2 = new User();
@@ -38,7 +38,7 @@ public class DataInitializer implements CommandLineRunner {
             admin2.setAvatar("https://api.dicebear.com/9.x/avataaars/svg?seed=Taurus");
             admin2.setConstellation("金牛座");
             admin2.setPhone("13800138002");
-            admin2.setIsAdmin(true);
+            admin2.setAdmin(true);
             userRepository.save(admin2);
 
             // 创建普通用户
@@ -49,7 +49,7 @@ public class DataInitializer implements CommandLineRunner {
             user3.setAvatar("https://api.dicebear.com/9.x/avataaars/svg?seed=Gemini");
             user3.setConstellation("双子座");
             user3.setPhone("13800138003");
-            user3.setIsAdmin(false);
+            user3.setAdmin(false);
             userRepository.save(user3);
 
             System.out.println("测试用户初始化完成");

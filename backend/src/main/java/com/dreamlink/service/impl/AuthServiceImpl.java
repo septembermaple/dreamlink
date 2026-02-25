@@ -63,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
         user.setPhone(request.getPhone());
         user.setConstellation(request.getConstellation());
         user.setAvatar("https://api.dicebear.com/9.x/avataaars/svg?seed=" + request.getUsername());
-        user.setIsAdmin(false);
+        user.setAdmin(false);
 
         userRepository.save(user);
 

@@ -21,7 +21,7 @@ public class DreamServiceImpl implements DreamService {
         Dream dream = new Dream();
         dream.setUserId(request.getUserId());
         dream.setContent(request.getContent());
-        dream.setIsPublic(request.isPublic());
+        dream.setPublic(request.isPublic());
 
         return dreamRepository.save(dream);
     }
@@ -48,7 +48,7 @@ public class DreamServiceImpl implements DreamService {
                 .orElseThrow(() -> new RuntimeException("梦境不存在"));
 
         dream.setContent(request.getContent());
-        dream.setIsPublic(request.isPublic());
+        dream.setPublic(request.isPublic());
 
         return dreamRepository.save(dream);
     }
