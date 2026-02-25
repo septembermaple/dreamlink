@@ -12,20 +12,20 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // 评论ID，主键，自增
 
     @Column(nullable = false)
-    private Long dreamId;
+    private Long dreamId; // 梦境ID，关联梦境表，不能为空
 
     @Column(nullable = false)
-    private Long userId;
+    private Long userId; // 用户ID，关联用户表，不能为空
 
     @Column(columnDefinition = "TEXT", nullable = false)
-    private String content;
+    private String content; // 评论内容，使用TEXT类型存储，不能为空
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt; // 创建时间
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt; // 更新时间
 
     @PrePersist
     protected void onCreate() {
