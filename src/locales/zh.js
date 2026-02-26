@@ -1,6 +1,6 @@
 export default {
   app: {
-    title: '匹配一个梦',
+    title: '梦境互联',
     record: '记录',
     world: '世界',
     messages: '消息',

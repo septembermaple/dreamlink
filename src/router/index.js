@@ -5,25 +5,25 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/auth/Login.vue'),
     meta: { requiresAuth: false },
-    components: {
-      auth: () => import('../views/auth/Login.vue')
-    }
+    component: () => import('../views/auth/Login.vue')
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => import('../views/auth/Register.vue'),
     meta: { requiresAuth: false },
-    components: {
-      auth: () => import('../views/auth/Register.vue')
-    }
+    component: () => import('../views/auth/Register.vue')
+  },
+  // 重定向默认路径到登录页
+  {
+    path: '/',
+    redirect: '/login',
+    meta: { requiresAuth: false }
   },
   
   // 主应用路由
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: () => import('../views/Home.vue'),
     meta: { requiresAuth: true }

@@ -121,7 +121,7 @@ const notifications = ref([
   {
     id: 2,
     type: 'system',
-    content: '欢迎使用匹配一个梦，开始记录你的梦境之旅吧！',
+    content: '欢迎使用梦境互联，开始记录你的梦境之旅吧！',
     createdAt: new Date(Date.now() - 86400000).toISOString(),
     read: true
   }

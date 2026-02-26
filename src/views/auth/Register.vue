@@ -1,31 +1,33 @@
 <template>
   <div class="auth-container">
     <div class="auth-card">
-      <h1 class="app-title">匹配一个梦</h1>
-      <h2 class="auth-title">注册</h2>
+      <div class="logo">
+        <h1 class="app-title">{{ t('app.title') }}</h1>
+      </div>
+      <h2 class="auth-title">{{ t('auth.register') }}</h2>
       
       <form @submit.prevent="handleRegister">
         <div class="form-group">
-          <label for="username">用户名</label>
+          <label for="username">{{ t('auth.username') }}</label>
           <input 
             type="text" 
             id="username" 
             v-model="form.username" 
             class="input" 
-            placeholder="请输入用户名"
+            :placeholder="t('auth.username')"
             required
           />
         </div>
         
         <div class="form-group">
-          <label for="phone">手机号</label>
+          <label for="phone">{{ t('auth.phone') }}</label>
           <div class="phone-input-group">
             <input 
               type="tel" 
               id="phone" 
               v-model="form.phone" 
               class="input phone-input" 
-              placeholder="请输入手机号"
+              :placeholder="t('auth.phone')"
               required
             />
             <button 
@@ -34,68 +36,68 @@
               @click="sendCode" 
               :disabled="countdown > 0"
             >
-              {{ countdown > 0 ? `${countdown}s后重发` : '获取验证码' }}
+              {{ countdown > 0 ? `${countdown}s后重发` : t('auth.getCode') }}
             </button>
           </div>
         </div>
         
         <div class="form-group">
-          <label for="code">验证码</label>
+          <label for="code">{{ t('auth.verificationCode') }}</label>
           <input 
             type="text" 
             id="code" 
             v-model="form.code" 
             class="input" 
-            placeholder="请输入验证码"
+            :placeholder="t('auth.verificationCode')"
             required
           />
         </div>
         
         <div class="form-group">
-          <label for="password">密码</label>
+          <label for="password">{{ t('auth.password') }}</label>
           <input 
             type="password" 
             id="password" 
             v-model="form.password" 
             class="input" 
-            placeholder="请输入密码"
+            :placeholder="t('auth.password')"
             required
           />
         </div>
         
         <div class="form-group">
-          <label for="constellation">星座</label>
+          <label for="constellation">{{ t('profile.constellation') }}</label>
           <select 
             id="constellation" 
             v-model="form.constellation" 
             class="input" 
             required
           >
-            <option value="">请选择星座</option>
-            <option value="白羊座">白羊座</option>
-            <option value="金牛座">金牛座</option>
-            <option value="双子座">双子座</option>
-            <option value="巨蟹座">巨蟹座</option>
-            <option value="狮子座">狮子座</option>
-            <option value="处女座">处女座</option>
-            <option value="天秤座">天秤座</option>
-            <option value="天蝎座">天蝎座</option>
-            <option value="射手座">射手座</option>
-            <option value="摩羯座">摩羯座</option>
-            <option value="水瓶座">水瓶座</option>
-            <option value="双鱼座">双鱼座</option>
+            <option value="">{{ t('profile.constellation') }}</option>
+            <option value="白羊座">{{ t('profile.constellations.aries') }}</option>
+            <option value="金牛座">{{ t('profile.constellations.taurus') }}</option>
+            <option value="双子座">{{ t('profile.constellations.gemini') }}</option>
+            <option value="巨蟹座">{{ t('profile.constellations.cancer') }}</option>
+            <option value="狮子座">{{ t('profile.constellations.leo') }}</option>
+            <option value="处女座">{{ t('profile.constellations.virgo') }}</option>
+            <option value="天秤座">{{ t('profile.constellations.libra') }}</option>
+            <option value="天蝎座">{{ t('profile.constellations.scorpio') }}</option>
+            <option value="射手座">{{ t('profile.constellations.sagittarius') }}</option>
+            <option value="摩羯座">{{ t('profile.constellations.capricorn') }}</option>
+            <option value="水瓶座">{{ t('profile.constellations.aquarius') }}</option>
+            <option value="双鱼座">{{ t('profile.constellations.pisces') }}</option>
           </select>
         </div>
         
         <div class="form-group">
           <button type="submit" class="btn btn-primary w-full" :disabled="loading">
-            {{ loading ? '注册中...' : '注册' }}
+            {{ loading ? t('auth.registerLoading') : t('auth.registerButton') }}
           </button>
         </div>
         
         <div class="form-group">
           <button type="button" class="btn w-full" @click="switchToLogin">
-            已有账号？去登录
+            {{ t('auth.switchToLogin') }}
           </button>
         </div>
       </form>
@@ -107,6 +109,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { authAPI } from '../../services/api'
+import { t } from '../../locales/i18n'
 
 const router = useRouter()
 const form = ref({
@@ -182,11 +185,22 @@ const sendCode = () => {
   max-width: 400px;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+
 .app-title {
-  color: #4CAF50;
-  font-size: 24px;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  font-family: var(--font-sans);
+  letter-spacing: 1px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin-bottom: 10px;
 }
 
 .auth-title {

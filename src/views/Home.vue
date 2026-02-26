@@ -86,18 +86,30 @@ onMounted(() => {
 
 const loadRecentDreams = async () => {
   try {
+    // 检查用户是否已登录
+    if (!user.value) {
+      console.error('用户未登录')
+      return
+    }
     const response = await dreamAPI.getUserDreams(user.value.id)
     if (response.success) {
       recentDreams.value = response.data.slice(0, 5) // 只显示最近5个
     }
   } catch (error) {
     console.error('加载梦境失败:', error)
+    // 不在这里处理登录重定向，让路由守卫处理
   }
 }
 
 const handleSubmit = async () => {
   if (dreamContent.value.length < 50) {
     alert('梦境内容至少需要50字')
+    return
+  }
+  
+  // 检查用户是否已登录
+  if (!user.value) {
+    alert('请先登录')
     return
   }
   
@@ -140,6 +152,12 @@ const viewDream = (dreamId) => {
 }
 
 const editDream = (dream) => {
+  // 检查用户是否已登录
+  if (!user.value) {
+    alert('请先登录')
+    return
+  }
+  
   dreamContent.value = dream.content
   isPublic.value = dream.isPublic
   editingDreamId.value = dream.id
@@ -148,6 +166,12 @@ const editDream = (dream) => {
 }
 
 const deleteDream = async (dreamId) => {
+  // 检查用户是否已登录
+  if (!user.value) {
+    alert('请先登录')
+    return
+  }
+  
   if (confirm(t('home.confirmDelete'))) {
     try {
       const response = await dreamAPI.deleteDream(dreamId)
@@ -190,44 +214,145 @@ const truncateText = (text, maxLength) => {
   padding: 20px 0;
 }
 
-.app-title {
-  font-size: 36px;
-  color: #4CAF50;
-  margin: 0 0 30px 0;
-  text-align: center;
-  font-weight: bold;
+.dream-form-card {
+  background: var(--card-background);
+  backdrop-filter: blur(20px);
+  border-radius: var(--border-radius-artistic);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.6s ease-out;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
 }
 
-.dream-form-card {
-  background-color: white;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 30px;
-  border: 1px solid #e0e0e0;
+.dream-form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: var(--primary-gradient);
+  border-radius: var(--border-radius-artistic) var(--border-radius-artistic) 0 0;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.dream-form-card:hover::before {
+  transform: scaleX(1);
+}
+
+.dream-form-card:hover {
+  transform: translateY(-10px) rotate(1deg);
+  box-shadow: 0 20px 50px rgba(109, 89, 122, 0.2);
+  border-color: rgba(181, 101, 167, 0.3);
+}
+
+.dream-form-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(109, 89, 122, 0.05) 0%, rgba(181, 101, 167, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.dream-form-card:hover::after {
+  opacity: 1;
 }
 
 .form-title {
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 18px;
+  font-family: var(--font-artistic);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  padding: 20px 0;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: all 0.3s ease;
+}
+
+.form-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: var(--primary-gradient);
+  border-radius: 4px;
+  transform: scaleX(0) translateX(-50%);
+  transition: transform 0.3s ease;
+}
+
+.form-title:hover::after {
+  transform: scaleX(1) translateX(-50%);
+}
+
+.form-title:hover {
+  color: #b565a7;
+  text-shadow: 0 2px 8px rgba(181, 101, 167, 0.4);
 }
 
 .dream-textarea {
   width: 100%;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 20px 24px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius-artistic);
   font-size: 16px;
   resize: vertical;
-  font-family: inherit;
-  margin-bottom: 10px;
-  background-color: #f9f9f9;
+  font-family: var(--font-artistic);
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+  min-height: 220px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.dream-textarea::placeholder {
+  color: var(--text-secondary);
+  font-style: italic;
+  transition: all 0.4s ease;
+}
+
+.dream-textarea:focus {
+  outline: none;
+  border-color: transparent;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3), 0 4px 20px rgba(102, 126, 234, 0.1);
+  transform: translateY(-2px);
+}
+
+.dream-textarea:focus::placeholder {
+  color: transparent;
+}
+
+.dream-textarea:hover {
+  border-color: rgba(102, 126, 234, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.1);
 }
 
 .word-count {
   text-align: right;
   font-size: 14px;
-  color: #666;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .checkbox-label {
@@ -236,17 +361,25 @@ const truncateText = (text, maxLength) => {
   gap: 8px;
   cursor: pointer;
   font-size: 14px;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  padding: 8px 12px;
+  border-radius: var(--border-radius-md);
+}
+
+.checkbox-label:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #667eea;
 }
 
 .form-actions {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.section-title {
-  margin: 30px 0 20px 0;
-  color: #333;
-  font-size: 18px;
+  margin-top: 24px;
   text-align: center;
 }
 
@@ -257,63 +390,143 @@ const truncateText = (text, maxLength) => {
 .dreams-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: var(--spacing-md);
 }
 
 .dream-item {
-  background-color: white;
-  border-radius: 8px;
-  padding: 15px;
+  background: var(--card-background);
+  backdrop-filter: blur(20px);
+  border-radius: var(--border-radius-artistic);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
   cursor: pointer;
-  border: 1px solid #e0e0e0;
-  transition: all 0.2s ease;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
+  animation: fadeIn 0.6s ease-out;
+}
+
+.dream-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: var(--secondary-gradient);
+  border-radius: var(--border-radius-artistic) var(--border-radius-artistic) 0 0;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.dream-item:hover::before {
+  transform: scaleX(1);
 }
 
 .dream-item:hover {
-  background-color: #f9f9f9;
+  transform: translateY(-10px) rotate(1deg);
+  box-shadow: 0 20px 50px rgba(255, 181, 181, 0.2);
+  border-color: rgba(134, 117, 169, 0.3);
+}
+
+.dream-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 181, 181, 0.05) 0%, rgba(134, 117, 169, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.dream-item:hover::after {
+  opacity: 1;
 }
 
 .dream-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   font-size: 14px;
-  color: #666;
+  color: var(--text-secondary);
+}
+
+.dream-date {
+  font-weight: 500;
 }
 
 .dream-public {
-  background-color: #4CAF50;
+  background: var(--accent-gradient);
   color: white;
-  padding: 2px 8px;
-  border-radius: 12px;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-full);
   font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .dream-preview {
-  margin-bottom: 15px;
+  margin-bottom: 16px;
   line-height: 1.6;
-  color: #333;
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 1.7;
 }
 
 .dream-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: flex-end;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.btn-sm {
-  padding: 5px 10px;
-  font-size: 14px;
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .dream-form-card {
+    padding: var(--spacing-md);
+  }
+  
+  .dream-textarea {
+    padding: 14px 18px;
+    font-size: 15px;
+  }
+  
+  .form-actions {
+    margin-top: 20px;
+  }
+  
+  .dream-item {
+    padding: var(--spacing-md);
+  }
 }
 
-.empty-state {
-  text-align: center;
-  padding: 40px;
-  color: #666;
-  background-color: white;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-  margin-top: 20px;
+/* 暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .dream-textarea {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+  }
+  
+  .dream-textarea:focus {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  .checkbox-label:hover {
+    background: rgba(102, 126, 234, 0.2);
+  }
+  
+  .dream-actions {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
 }
 </style>

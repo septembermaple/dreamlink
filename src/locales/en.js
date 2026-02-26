@@ -1,6 +1,6 @@
 export default {
   app: {
-    title: 'Match a Dream',
+    title: 'dreamlink',
     record: 'Record',
     world: 'World',
     messages: 'Messages',
